@@ -71,8 +71,17 @@ Vue.component('fill-blanks',{
 })
 // 填空、简答题模型结束
 
+/*
+{
+    单选 : single,
+    判断 : true-false,
+    多选 : muti,
+    填空 : fill,
+    简答 : short-answer
+}
+*/
 var app = new Vue({
-    el : '#myVue',
+    el : '#question',
     data : {
         items : [
                     {
@@ -82,7 +91,7 @@ var app = new Vue({
                         class : '',
                         option : [
                             {value : '1',check : '',optionId : 1},
-                            {value : '2',check : 'checked',optionId : 2},
+                            {value : '2',check : '',optionId : 2},
                             {value : '3',check : '',optionId : 3},
                             {value : '4',check : '',optionId : 4},
                         ]
@@ -93,7 +102,7 @@ var app = new Vue({
                         questionId : 'question_3',
                         class : 'question-un-active',
                         option : [
-                            {value : '辽宁',check : 'checked',optionId : 9},
+                            {value : '辽宁',check : '',optionId : 9},
                             {value : '吉林',check : '',optionId : 10},
                             {value : '黑龙江',check : '',optionId : 11},
                             {value : '河北',check : '',optionId : 12},
@@ -106,14 +115,16 @@ var app = new Vue({
                         class : 'question-un-active',
                         style : {display:'none'},
                         option : [
-                            {value : '辽宁',optionId : 9},
-                            {value : '吉林',optionId : 10},
-                            {value : '黑龙江',optionId : 11},
-                            {value : '河北',optionId : 12},
+                            {value : '',optionId : 9},
+                            {value : '',optionId : 10},
+                            {value : '',optionId : 11},
+                            {value : '',optionId : 12},
                         ]
                     }
                 ],
-        active : 0
+        active : 0,
+        all : 0,
+        questionType : ''
     },
     methods : {
         prev : function(event){
@@ -121,6 +132,7 @@ var app = new Vue({
                 this.items[this.active].class = 'question-un-active';
                 this.items[this.active-1].class = '';
                 this.active--;
+                this.changQuestionType();
             }
             else{
                 console.log('已经是第一题了');
@@ -131,6 +143,7 @@ var app = new Vue({
                 this.items[this.active].class = 'question-un-active';
                 this.items[this.active+1].class = '';
                 this.active++;
+                this.changQuestionType();
             }
             else{
                 console.log('已经最后一题了');
@@ -154,6 +167,68 @@ var app = new Vue({
             else{
                 this.items[this.active].option[index].value = value;
             }
+        },
+        changQuestionType : function(){
+            switch(this.items[this.active].type){
+                case 'single':
+                    this.questionType = '单选题';
+                    break;
+
+                case 'true-false':
+                    this.questionType = '判断题';
+                    break;
+
+                case 'muti':
+                    this.questionType = '多选题';
+                    break;
+
+                case 'fill':
+                    this.questionType = '填空题';
+                    break;
+
+                case 'short-answer':
+                    this.questionType = '简答题';
+                    break;
+
+                default :
+                    this.questionType = '未知';
+            }
+        },
+        sheet : function(){
+            $('#answerSheet').toggle();
+        },
+        getClass : function(index){
+            var temp;
+            if(this.items[index].type == 'short-answer' || this.items[index].type == 'fill'){
+                temp = '1';
+                for (var i = 0; i < this.items[index].option.length; i++) {
+                    if(this.items[index].option[i].value == ''){
+                        temp = '';
+                        break;
+                    }
+                }
+            }
+            else{
+                temp = '';
+                for (var i = 0; i < this.items[index].option.length; i++) {
+                    temp += this.items[index].option[i].check;
+                }
+            }
+            if(temp == ''){
+                return ' weui-btn_default';
+            }
+            else{
+                return 'weui-btn_primary';
+            }
+            
+        },
+        jumpQuestion : function(index){
+            this.active = index;
+            this.sheet();
         }
+    },
+    mounted : function(){
+        this.all = this.items.length;
+        this.changQuestionType();
     }
 })

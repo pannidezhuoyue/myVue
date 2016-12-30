@@ -21,6 +21,8 @@
         .weui-cell{padding: 10px 5vw;}
         .weui-btn_plain-primary{width: 30%;display: inline-block;margin-right: 3vw;margin-bottom: 15vh;margin-top: 5vh;}
         .question-un-active{display: none;}
+        .sheet-btn{width: 14vw;line-height: 8vh;margin-right: 3vw;}
+        .btn-div{padding: 5vh 2vw 0 5vw;}
     </style>
     <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="countdown.js"></script>
@@ -28,191 +30,16 @@
     <script type="text/javascript" src="myVue.js" defer></script>
 </head>
 <body>
-    <div class="weui-tab question" id="question">
-        <div class="weui-navbar">
-            <div class="my-navbar__item">判断题</div>
-            <div class="my-navbar__item">1/50</div>
-            <div class="my-navbar__item sheetIcon">答题卡</div>
-        </div>
-        <div class="my-content">
-            <!-- 判断题 -->
-            <div id="question1" style="display: none;">
-                <div class="weui-cells__title">1.中国人民最幸福</div>
-                <div class="weui-cells weui-cells_radio">
-                    <label class="weui-cell weui-check__label" for="x11">
-                        <div class="weui-cell__bd">
-                            <p>对</p>
-                        </div>
-                        <div class="weui-cell__ft">
-                            <input type="radio" class="weui-check" name="radio1" id="x11">
-                            <span class="weui-icon-checked"></span>
-                        </div>
-                    </label>
-                    <label class="weui-cell weui-check__label" for="x12">
-                        <div class="weui-cell__bd">
-                            <p>错</p>
-                        </div>
-                        <div class="weui-cell__ft">
-                            <input type="radio" name="radio1" class="weui-check" id="x12" checked="checked">
-                            <span class="weui-icon-checked"></span>
-                        </div>
-                    </label>
-                </div>
+    <div id="question">
+        <div class="weui-tab question">
+            <div class="weui-navbar">
+                <div class="my-navbar__item">{{questionType}}</div>
+                <div class="my-navbar__item">{{active+1}}/{{all}}</div>
+                <div class="my-navbar__item" v-on:click="sheet">答题卡</div>
             </div>
-            <!-- 判断题结束 -->
-            <!-- 单选题 -->
-            <div id="question2" style="display: none;">
-                <div class="weui-cells__title">1.男性的退休年龄</div>
-                <div class="weui-cells weui-cells_radio">
-                    <label class="weui-cell weui-check__label" for="x21">
-                        <div class="weui-cell__bd">
-                            <p>A. &nbsp; 60</p>
-                        </div>
-                        <div class="weui-cell__ft">
-                            <input type="radio" class="weui-check" name="radio1" id="x21">
-                            <span class="weui-icon-checked"></span>
-                        </div>
-                    </label>
-                    <label class="weui-cell weui-check__label" for="x22">
-                        <div class="weui-cell__bd">
-                            <p>B. &nbsp; 65</p>
-                        </div>
-                        <div class="weui-cell__ft">
-                            <input type="radio" name="radio1" class="weui-check" id="x22" checked="checked">
-                            <span class="weui-icon-checked"></span>
-                        </div>
-                    </label>
-                    <label class="weui-cell weui-check__label" for="x23">
-                        <div class="weui-cell__bd">
-                            <p>C. &nbsp; 70</p>
-                        </div>
-                        <div class="weui-cell__ft">
-                            <input type="radio" class="weui-check" name="radio1" id="x23">
-                            <span class="weui-icon-checked"></span>
-                        </div>
-                    </label>
-                    <label class="weui-cell weui-check__label" for="x24">
-                        <div class="weui-cell__bd">
-                            <p>D. &nbsp; 到咽气</p>
-                        </div>
-                        <div class="weui-cell__ft">
-                            <input type="radio" class="weui-check" name="radio1" id="x24">
-                            <span class="weui-icon-checked"></span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            <!-- 单选题结束 -->
-            <!-- 多选题 -->
-            <div id="question3" style="display: none;">
-                <div class="weui-cells__title">下列属于中国的有</div>
-                <div class="weui-cells weui-cells_checkbox">
-                    <label class="weui-cell weui-check__label" for="s11">
-                        <div class="weui-cell__hd">
-                            <input type="checkbox" class="weui-check" name="checkbox1" id="s11" checked="checked">
-                            <i class="weui-icon-checked"></i>
-                        </div>
-                        <div class="weui-cell__bd">
-                            <p>A. &nbsp; 辽宁</p>
-                        </div>
-                    </label>
-                    <label class="weui-cell weui-check__label" for="s12">
-                        <div class="weui-cell__hd">
-                            <input type="checkbox" name="checkbox1" class="weui-check" id="s12">
-                            <i class="weui-icon-checked"></i>
-                        </div>
-                        <div class="weui-cell__bd">
-                            <p>B. &nbsp; 吉林</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            <!-- 多选题结束 -->
-            <!-- 填空题 -->
-            <div id="question4" style="display: none;">
-                <div class="weui-cells__title">请填写3个中国的省会</div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(1)</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(2)</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(3)</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 填空题结束 -->
-            <!-- 简答题 -->
-            <div id="question5" style="display: none;">
-                <div class="weui-cells__title">简述你人生的前20年</div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(1)</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(2)</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(3)</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(3)</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(3)</span></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="weui-cells weui-cells_form">
-                    <div class="weui-cell">
-                        <div class="weui-cell__bd">
-                            <textarea class="weui-textarea" placeholder="请输入答案" rows="3"></textarea>
-                            <div class="weui-textarea-counter"><span>(3)</span></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 简答题结束 -->
-            <div id="myVue">
+            <div class="my-content">
                 <div v-for="item in items">
-                    <div v-if="item.type == 'single'">
+                    <div v-if="(item.type == 'single' || item.type == 'true-false')">
                         <single-answer v-bind:todo="item" v-on:chang="changUp"></single-answer>
                     </div>
                     <div v-else-if="item.type == 'muti'">
@@ -227,71 +54,65 @@
                     <a href="javascript:" class="weui-btn weui-btn_plain-primary" v-on:click="next">下一题</a>
                 </div>
             </div>
-        </div>
-        <div class="weui-tabbar">
-            <div class="my-w-time">
-                <div class="my-time">
-                    
+            <div class="weui-tabbar">
+                <div class="my-w-time">
+                    <div class="my-time">
+                        
+                    </div>
                 </div>
-            </div>
-            <div class="my-w-submit">
-                <div class="my-submit">
-                    提交试卷
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="weui-tab answerSheet" id="answerSheet">
-        <div class="weui-navbar">
-            <div class="my-navbar__item sheetIcon">返回考试</div>
-            <div class="my-navbar__item">答题卡</div>
-            <div class="my-navbar__item my-time"></div>
-        </div>
-        <div class="my-content" style="background-color: #F1F1F1;height: 100%;">
-            <div style="padding: 5vh 2vw 0 5vw;">
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="width: 14vw;line-height: 8vh;margin-right: 3vw;">1</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_primary" style="width: 14vw;line-height: 8vh;margin-right: 3vw;">2</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="width: 14vw;line-height: 8vh;margin-right: 3vw;">3</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="width: 14vw;line-height: 8vh;margin-right: 3vw;">4</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="width: 14vw;line-height: 8vh;margin-right: 3vw;">11</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="width: 14vw;line-height: 8vh;margin-right: 3vw;">12</a>
-                <a href="javascript:;" class="weui-btn weui-btn_mini weui-btn_default" style="width: 14vw;line-height: 8vh;margin-right: 3vw;">123</a>
-            </div>
-        </div>
-        <div class="weui-tabbar">
-            <div class="my-w-submit" style="width: 100%;">
-                <div class="my-submit">
-                    提交试卷
+                <div class="my-w-submit">
+                    <div class="my-submit">
+                        提交试卷
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- 弹出层 -->
-    <div id="dialogs">
-        <!--BEGIN dialog1-->
-        <div class="js_dialog" id="iosDialog1" style="display: none;z-index: 10;">
-            <div class="weui-mask"></div>
-            <div class="weui-dialog">
-                <div class="weui-dialog__hd"><strong class="weui-dialog__title">弹窗标题</strong></div>
-                <div class="weui-dialog__bd">弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内</div>
-                <div class="weui-dialog__ft">
-                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">辅助操作</a>
-                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">主操作</a>
+        <div class="weui-tab answerSheet" id="answerSheet">
+            <div class="weui-navbar">
+                <div class="my-navbar__item" v-on:click="sheet">返回考试</div>
+                <div class="my-navbar__item">答题卡</div>
+                <div class="my-navbar__item my-time"></div>
+            </div>
+            <div class="my-content" style="background-color: #F1F1F1;height: 100%;">
+                <div class="btn-div">
+                    <a class="weui-btn weui-btn_mini sheet-btn" href="javascript:;" v-for="(item, index) in items"  v-bind:class="getClass(index)" v-on:click="jumpQuestion(index)">{{index+1}}</a>
+                </div>
+            </div>
+            <div class="weui-tabbar">
+                <div class="my-w-submit" style="width: 100%;">
+                    <div class="my-submit">
+                        提交试卷
+                    </div>
                 </div>
             </div>
         </div>
-        <!--END dialog1-->
-        <!--BEGIN dialog2-->
-        <div class="js_dialog" id="iosDialog2" style="display: none;">
-            <div class="weui-mask"></div>
-            <div class="weui-dialog">
-                <div class="weui-dialog__bd">弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内</div>
-                <div class="weui-dialog__ft">
-                    <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
+        <!-- 弹出层 -->
+        <div id="dialogs">
+            <!--BEGIN dialog1-->
+            <div class="js_dialog" id="iosDialog1" style="display: none;z-index: 10;">
+                <div class="weui-mask"></div>
+                <div class="weui-dialog">
+                    <div class="weui-dialog__hd"><strong class="weui-dialog__title">弹窗标题</strong></div>
+                    <div class="weui-dialog__bd">弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内</div>
+                    <div class="weui-dialog__ft">
+                        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_default">辅助操作</a>
+                        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">主操作</a>
+                    </div>
                 </div>
             </div>
+            <!--END dialog1-->
+            <!--BEGIN dialog2-->
+            <div class="js_dialog" id="iosDialog2" style="display: none;z-index: 11;">
+                <div class="weui-mask"></div>
+                <div class="weui-dialog">
+                    <div class="weui-dialog__bd">弹窗内容，告知当前状态、信息和解决方法，描述文字尽量控制在三行内</div>
+                    <div class="weui-dialog__ft">
+                        <a href="javascript:;" class="weui-dialog__btn weui-dialog__btn_primary">知道了</a>
+                    </div>
+                </div>
+            </div>
+            <!--END dialog2-->
         </div>
-        <!--END dialog2-->
     </div>
     <!-- 弹出层结束 -->
     <script type="text/javascript">
